@@ -1,7 +1,10 @@
 package com.stylingandroid.vectordrawables;
 
 import android.app.Activity;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 public class VectorDrawablesActivity extends Activity {
 
@@ -9,5 +12,10 @@ public class VectorDrawablesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vector_drawables);
+        ImageView androidImageView = (ImageView) findViewById(R.id.android);
+        Drawable drawable = androidImageView.getDrawable();
+        if (drawable != null && drawable instanceof Animatable) {
+            ((Animatable) drawable).start();
+        }
     }
 }
