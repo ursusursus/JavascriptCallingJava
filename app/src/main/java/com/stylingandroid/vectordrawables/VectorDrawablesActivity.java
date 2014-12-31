@@ -14,7 +14,7 @@ public class VectorDrawablesActivity extends Activity {
         setContentView(R.layout.activity_vector_drawables);
         ImageView androidImageView = (ImageView) findViewById(R.id.android);
         Drawable drawable = androidImageView.getDrawable();
-        if (drawable != null && drawable instanceof Animatable) {
+        if (drawable instanceof Animatable) {
             ((Animatable) drawable).start();
         }
     }
