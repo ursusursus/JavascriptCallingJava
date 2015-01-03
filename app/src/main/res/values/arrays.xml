@@ -3,5 +3,6 @@
     <string-array name="image_ids">
         <item>android</item>
         <item>animated_android</item>
+        <item>animated_star</item>
     </string-array>
 </resources>
