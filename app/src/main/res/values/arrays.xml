@@ -4,5 +4,6 @@
         <item>android</item>
         <item>animated_android</item>
         <item>animated_star</item>
+        <item>animated_square</item>
     </string-array>
 </resources>
