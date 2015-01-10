@@ -36,7 +36,6 @@ public class ImageFragment extends Fragment {
                     startAnimation(imageView);
                 }
             });
-            imageView.requestLayout();
         }
 
     }
