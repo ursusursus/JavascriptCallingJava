@@ -40,7 +40,7 @@ public class VectorDrawablesActivity extends ActionBarActivity {
         runRhino();
     }
 
-//    private void runRhino() {
+    //    private void runRhino() {
 //        String script = "function hello(java) {\n" +
 //                "    if (typeof log != 'undefined') {\n" +
 //                "        log(\"JavaScript say hello to \" + java);\n" +
@@ -89,48 +89,53 @@ public class VectorDrawablesActivity extends ActionBarActivity {
 //            Context.exit();
 //        }
 //    }
-private void runRhino() {
-    String script = "function run(androidContext) {\n" +
-            "var m = Packages.com.stylingandroid.vectordrawables.FooActivity.launch;\n" +
-            "m(androidContext);\n" +
-            "}";
+    private void runRhino() {
+        // OMG IT WORKS
+        String script = "function run(androidContext) {\n" +
+                "\t// Imports\n" +
+                "\tvar NotifUtils = Packages.com.stylingandroid.vectordrawables.NotifUtils;\n" +
+                "\n" +
+                "\t// Actual code\n" +
+                "\tvar title = \"My title\"\n" +
+                "\tNotifUtils.launch(androidContext, title);\n" +
+                "}";
+//    String script = "function run(androidContext) {\n" +
+//            "\tvar FooActivity = Packages.com.stylingandroid.vectordrawables.FooActivity;\n" +
+//            "\tvar Intent = Packages.android.content.Intent;\n" +
+//            "\n" +
+//            "\tvar intent = new Intent(androidContext, FooActivity);\n" +
+//            "        androidContext.startActivity(intent);\n" +
+//            "}";
 
-    // Get the JavaScript in previous section
-    String functionName = "run";
-    Object[] functionParams = new Object[]{this};
+        // Get the JavaScript in previous section
+        String functionName = "run";
+        Object[] functionParams = new Object[]{this};
 
-    // Every Rhino VM begins with the enter()
-    // This Context is not Android's Context
-    Context rhino = Context.enter();
+        // Every Rhino VM begins with the enter()
+        // This Context is not Android's Context
+        Context rhino = Context.enter();
 
-    // Turn off optimization to make Rhino Android compatible
-    rhino.setOptimizationLevel(-1);
-    try {
-        Scriptable scope = rhino.initStandardObjects();
+        // Turn off optimization to make Rhino Android compatible
+        rhino.setOptimizationLevel(-1);
+        try {
+            Scriptable scope = rhino.initStandardObjects();
 
-        // This line set the javaContext variable in JavaScript
-        // ScriptableObject.putProperty(scope, "javaContext", Context.javaToJS(androidContextObject, scope));
-        ScriptableObject.putProperty(scope, "javaContext", Context.javaToJS(this, scope));
+            // This line set the javaContext variable in JavaScript
+            ScriptableObject.putProperty(scope, "javaContext", Context.javaToJS(this, scope));
 
-        // Note the forth argument is 1, which means the JavaScript source has
-        // been compressed to only one line using something like YUI
-        // rhino.evaluateString(scope, RHINO_LOG + source, "ScriptAPI", 1, null);
-        rhino.evaluateString(scope, script, "whatever", 1, null);
+            // Note the forth argument is 1, which means the JavaScript source has
+            // been compressed to only one line using something like YUI
+            rhino.evaluateString(scope, script, "whatever", 1, null);
 
-        // We get the hello function defined in JavaScript
-        Function function = (Function) scope.get(functionName, scope);
+            // We get the hello function defined in JavaScript
+            Function function = (Function) scope.get(functionName, scope);
 
-        // Call the hello function with params
-        // NativeObject result = (NativeObject) function.call(rhino, scope, scope, functionParams);
-        function.call(rhino, scope, scope, functionParams);
-        // After the hello function is invoked, you will see logcat output
+            // Call the hello function with params
+            function.call(rhino, scope, scope, functionParams);
 
-        // Finally we want to print the result of hello function
-        // String foo = (String) Context.jsToJava(result.get("foo", result), String.class);
-        // log(foo);
-    } finally {
-        // We must exit the Rhino VM
-        Context.exit();
+        } finally {
+            // We must exit the Rhino VM
+            Context.exit();
+        }
     }
-}
 }
